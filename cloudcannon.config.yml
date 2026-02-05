@@ -6,15 +6,20 @@ collections_config:
     path: public/productos
     output: false
     icon: shopping_cart
-    allow_create: true # ESTA LÍNEA ES VITAL
-  
-  portafolio:
-    path: public/portafolio
-    output: false
-    icon: collections
-    allow_create: true # AGREGA ESTO AQUÍ TAMBIÉN
+    allow_create: true
+    # AQUÍ CONFIGURAMOS EL SELECTOR
     fields:
-      title:
-        type: string
-      imageUrl:
+      category:
+        type: select
+        options:
+          values:
+            - Camisas
+            - Tazas
+            - Sublimados
+            - Otros
+      image:
         type: image
+      price:
+        type: number
+      description:
+        type: textarea

@@ -31,7 +31,7 @@ const Portfolio: React.FC = () => {
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
             {items.map((item, index) => (
               <div key={index} className="relative group overflow-hidden rounded-2xl shadow-sm break-inside-avoid">
-                <img src={item.imageUrl} alt={item.title} className="w-full h-auto object-cover" />
+                <img src={item.imageUrl || item.image} alt={item.title} className="w-full h-auto object-cover" />
                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <h3 className="text-white font-bold text-xl p-4 text-center">{item.title}</h3>
                 </div>

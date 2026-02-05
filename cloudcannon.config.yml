@@ -1,0 +1,16 @@
+paths:
+  uploads: public/images/portfolio
+  static: public
+
+collections_config:
+  productos:
+    path: src/content/productos
+    output: false
+    icon: shopping_cart
+  portafolio: # ESTO AGREGA EL PORTAFOLIO AL PANEL
+    path: src/content/portafolio
+    output: false
+    icon: collections
+    fields:
+      imageUrl:
+        type: image

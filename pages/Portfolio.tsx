@@ -7,8 +7,8 @@ const Portfolio: React.FC = () => {
   useEffect(() => {
     const loadPortfolio = async () => {
       try {
-        const user = "TU_USUARIO_DE_GITHUB"; 
-        const repo = "TU_NOMBRE_DE_REPO";
+        const user = "gabrielrivera0527-lgtm"; 
+        const repo = "meraki-store";
         
         const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/public/portafolio`);
         const files = await response.json();

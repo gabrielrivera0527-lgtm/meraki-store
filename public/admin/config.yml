@@ -1,0 +1,20 @@
+backend:
+  name: git-gateway
+  branch: main # Asegúrate de que tu rama en GitHub se llame main
+
+media_folder: "public/images/products" # Donde se guardarán las fotos
+public_folder: "/images/products"
+
+collections:
+  - name: "productos"
+    label: "Catálogo de Productos"
+    folder: "src/content/productos" # Aquí se guardarán los archivos .json
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "ID", name: "id", widget: "string"}
+      - {label: "Nombre del Producto", name: "name", widget: "string"}
+      - {label: "Precio", name: "price", widget: "number", value_type: "float"}
+      - {label: "Categoría", name: "category", widget: "select", options: ["Camisas", "Tazas", "Sublimados", "Otros"]}
+      - {label: "Imagen", name: "image", widget: "image"}
+      - {label: "Descripción", name: "description", widget: "text"}

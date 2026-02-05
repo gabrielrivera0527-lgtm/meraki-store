@@ -9,8 +9,8 @@ const Catalog: React.FC = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const user = "TU_USUARIO_DE_GITHUB"; // Cambia esto
-        const repo = "TU_NOMBRE_DE_REPO";   // Cambia esto
+        const user = "gabrielrivera0527-lgtm"; 
+        const repo = "meraki-store";
         
         // Llamamos a la API de GitHub para listar los archivos en public/productos
         const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/public/productos`);

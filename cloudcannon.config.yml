@@ -1,16 +1,20 @@
 paths:
   uploads: public/images/portfolio
   static: public
-
 collections_config:
   productos:
     path: src/content/productos
     output: false
     icon: shopping_cart
-  portafolio: # ESTO AGREGA EL PORTAFOLIO AL PANEL
+    allow_create: true # ESTA LÍNEA ES VITAL
+  
+  portafolio:
     path: src/content/portafolio
     output: false
     icon: collections
+    allow_create: true # AGREGA ESTO AQUÍ TAMBIÉN
     fields:
+      title:
+        type: string
       imageUrl:
         type: image

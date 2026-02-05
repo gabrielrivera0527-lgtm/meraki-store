@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
-import { PRODUCTS, WHATSAPP_NUMBER } from '../constants';
+import React, { useState, useEffect } from 'react';
+import { WHATSAPP_NUMBER } from '../constants'; // Solo importamos el número, NO los productos
 
 const Catalog: React.FC = () => {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('Todos');
-  const categories = ['Todos', 'Camisas', 'Tazas', 'Sublimados', 'Otros'];
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      // Cargamos solo los JSON de la carpeta content/productos
+      const modules = import.meta.glob('../content/productos/*.json');
+      const loadedProducts = [];
+
+      for (const path in modules) {
+        const content: any = await modules[path]();
+        loadedProducts.push({ ...content, id: path });
+      }
+      
+      // Si la carpeta está vacía, products será []
+      setProducts(loadedProducts);
+      setLoading(false);
+    };
+    loadProducts();
+  }, []);
 
   const filteredProducts = filter === 'Todos' 
     ? PRODUCTS 

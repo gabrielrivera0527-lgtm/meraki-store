@@ -4,7 +4,7 @@ import { WHATSAPP_NUMBER } from '../constants';
 const Catalog: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('Todos'); // Faltaba esto
+  const [filter, setFilter] = useState('Todos');
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -50,7 +50,12 @@ const Catalog: React.FC = () => {
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  if (loading) return <div className="text-center py-20 font-bold text-pink-600">Cargando catálogo Meraki...</div>;
+  if (loading) return (
+    <div className="flex flex-col items-center justify-center py-20">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-600 mb-4"></div>
+      <p className="font-bold text-pink-600">Cargando catálogo Meraki...</p>
+    </div>
+  );
 
   return (
     <div className="py-12 bg-slate-50 min-h-screen">
@@ -72,14 +77,15 @@ const Catalog: React.FC = () => {
           ))}
         </div>
 
+        {/* Lógica de visualización */}
         {products.length === 0 ? (
           <div className="bg-white p-10 rounded-2xl text-center shadow-sm border">
-            <p className="text-slate-500">Aún no hay productos en esta sección.</p>
+            <p className="text-slate-500">No hay productos registrados en el panel de CloudCannon aún.</p>
           </div>
-        ) : (
+        ) : filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {filteredProducts.map((p, i) => (
-              <div key={i} className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-100 flex flex-col">
+              <div key={i} className="bg-white rounded-3xl shadow-sm overflow-hidden border border-slate-100 flex flex-col hover:shadow-lg transition-shadow">
                 <div className="h-64 overflow-hidden">
                    <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                 </div>
@@ -96,6 +102,21 @@ const Catalog: React.FC = () => {
                 </div>
               </div>
             ))}
+          </div>
+        ) : (
+          /* MENSAJE CUANDO LA CATEGORÍA ESTÁ VACÍA */
+          <div className="col-span-full py-20 text-center bg-white rounded-3xl border border-dashed border-slate-300">
+            <div className="text-6xl mb-4">✨</div>
+            <h3 className="text-xl font-bold text-slate-900">¡Próximamente más productos!</h3>
+            <p className="text-slate-500 mt-2">
+              Actualmente no hay artículos en la categoría <span className="font-bold text-pink-600">{filter}</span>.
+            </p>
+            <button 
+              onClick={() => setFilter('Todos')} 
+              className="mt-6 bg-pink-50 text-pink-600 px-6 py-2 rounded-full font-bold hover:bg-pink-100 transition-colors"
+            >
+              Ver todo el catálogo
+            </button>
           </div>
         )}
       </div>

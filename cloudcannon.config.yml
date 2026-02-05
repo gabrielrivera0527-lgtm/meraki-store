@@ -22,4 +22,9 @@ collections_config:
       price:
         type: number
       description:
-        type: textarea
+        type: textarea  
+  portafolio:
+    path: public/portafolio # Ruta actualizada
+    output: false
+    icon: collections
+    allow_create: true

@@ -9,34 +9,24 @@ const Catalog: React.FC = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        // 1. Intentamos cargar archivos locales (para cuando estás programando)
-        const modules = import.meta.glob('/public/content/productos/*.json');
-        let loaded: any[] = [];
+        const user = "TU_USUARIO_DE_GITHUB"; // Cambia esto
+        const repo = "TU_NOMBRE_DE_REPO";   // Cambia esto
         
-        for (const path in modules) {
-          const content: any = await modules[path]();
-          loaded.push(content.default || content);
-        }
+        // Llamamos a la API de GitHub para listar los archivos en public/productos
+        const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/public/productos`);
+        
+        if (!response.ok) throw new Error("No se pudo conectar con GitHub");
 
-        // 2. Si estamos en Vercel (donde lo anterior falla), usamos GitHub directamente
-        // IMPORTANTE: Cambia 'TU_USUARIO' y 'TU_REPO' por tus datos de GitHub
-        if (loaded.length === 0) {
-          const user = "TU_USUARIO_AQUI"; 
-          const repo = "NOMBRE_DE_TU_REPO_AQUI";
-          
-          const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/public/content/productos`);
-          
-          if (response.ok) {
-            const files = await response.json();
-            const fetchPromises = files
-              .filter((file: any) => file.name.endsWith('.json'))
-              .map(async (file: any) => {
-                const contentRes = await fetch(file.download_url);
-                return contentRes.json();
-              });
-            loaded = await Promise.all(fetchPromises);
-          }
-        }
+        const files = await response.json();
+        
+        const loaded = await Promise.all(
+          files
+            .filter((file: any) => file.name.endsWith('.json'))
+            .map(async (file: any) => {
+              const res = await fetch(file.download_url);
+              return res.json();
+            })
+        );
 
         setProducts(loaded);
       } catch (e) {

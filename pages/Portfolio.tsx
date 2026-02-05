@@ -6,14 +6,27 @@ const Portfolio: React.FC = () => {
 
   useEffect(() => {
     const loadPortfolio = async () => {
-      const modules = import.meta.glob('../content/portafolio/*.json');
-      const loaded = [];
-      for (const path in modules) {
-        const content: any = await modules[path]();
-        loaded.push(content);
+      try {
+        const user = "TU_USUARIO_DE_GITHUB"; 
+        const repo = "TU_NOMBRE_DE_REPO";
+        
+        const response = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/public/portafolio`);
+        const files = await response.json();
+        
+        const loaded = await Promise.all(
+          files
+            .filter((file: any) => file.name.endsWith('.json'))
+            .map(async (file: any) => {
+              const res = await fetch(file.download_url);
+              return res.json();
+            })
+        );
+        setItems(loaded);
+      } catch (e) {
+        console.error("Error cargando portafolio:", e);
+      } finally {
+        setLoading(false);
       }
-      setItems(loaded);
-      setLoading(false);
     };
     loadPortfolio();
   }, []);

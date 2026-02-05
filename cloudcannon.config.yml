@@ -3,13 +3,13 @@ paths:
   static: public
 collections_config:
   productos:
-    path: src/content/productos
+    path: public/productos
     output: false
     icon: shopping_cart
     allow_create: true # ESTA LÍNEA ES VITAL
   
   portafolio:
-    path: src/content/portafolio
+    path: public/portafolio
     output: false
     icon: collections
     allow_create: true # AGREGA ESTO AQUÍ TAMBIÉN

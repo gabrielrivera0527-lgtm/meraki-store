@@ -4,20 +4,37 @@ import { WHATSAPP_NUMBER } from '../constants';
 const Catalog: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('Todos');
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        // 1. Intentamos cargar archivos locales (Vite)
         const modules = import.meta.glob('../content/productos/*.json');
-        const loadedProducts = [];
+        const loaded: any[] = [];
+        
         for (const path in modules) {
           const content: any = await modules[path]();
-          loadedProducts.push({ ...content, id: path });
+          loaded.push(content.default || content);
         }
-        setProducts(loadedProducts);
-      } catch (error) {
-        console.error("Error cargando productos:", error);
+
+        // 2. SI NO HAY LOCALES O ESTÁS EN PRODUCCIÓN: 
+        // Consultamos la API de GitHub para ver archivos nuevos
+        if (loaded.length === 0) {
+           const response = await fetch('https://api.github.com/repos/TU_USUARIO/TU_REPO/contents/src/content/productos');
+           const files = await response.json();
+           
+           for (const file of files) {
+             if (file.name.endsWith('.json')) {
+               const contentRes = await fetch(file.download_url);
+               const content = await contentRes.json();
+               loaded.push(content);
+             }
+           }
+        }
+
+        setProducts(loaded);
+      } catch (e) {
+        console.error("Error cargando productos:", e);
       } finally {
         setLoading(false);
       }
